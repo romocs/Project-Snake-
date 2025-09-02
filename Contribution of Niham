@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <conio.h>   // for kbhit() and getch()
+#include <windows.h> // for Sleep()
+#include <stdlib.h>  // for rand()
+
+#define WIDTH 40
+#define HEIGHT 20
+
+int gameOver;
+int x, y, fruitX, fruitY, score;
+int tailX[100], tailY[100]; 
+int nTail;
+enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN};
+enum eDirection dir;
+
+void Setup() {
+    gameOver = 0;
+    dir = STOP;
+    x = WIDTH / 2;
+    y = HEIGHT / 2;
+    fruitX = rand() % WIDTH;
+    fruitY = rand() % HEIGHT;
+    score = 0;
+}
+
+void Draw() {
+    system("cls"); // clear screen
+
+    // Top border
+    for (int i = 0; i < WIDTH + 2; i++)
+        printf("#");
+    printf("\n");
+
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            if (j == 0)
+                printf("#"); // left border
+
+            if (i == y && j == x)
+                printf("O"); // snake head
+            else if (i == fruitY && j == fruitX)
+                printf("F"); // fruit
+            else {
+                int print = 0;
+                for (int k = 0; k < nTail; k++) {
+                    if (tailX[k] == j && tailY[k] == i) {
+                        printf("o");
+                        print = 1;
+                    }
+                }
+                if (!print)
+                    printf(" ");
+            }
+
+            if (j == WIDTH - 1)
+                printf("#"); // right border
+        }
+        printf("\n");
+    }
+
+    // Bottom border
+    for (int i = 0; i < WIDTH + 2; i++)
+        printf("#");
+    printf("\n");
+
+    printf("Score: %d\n", score);
+}
