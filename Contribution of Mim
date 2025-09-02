@@ -1,0 +1,30 @@
+  // If snake hits wall
+    if (x >= WIDTH || x < 0 || y >= HEIGHT || y < 0)
+        gameOver = 1;
+
+    // If snake hits its tail
+    for (int i = 0; i < nTail; i++) {
+        if (tailX[i] == x && tailY[i] == y)
+            gameOver = 1;
+    }
+
+    // If snake eats fruit
+    if (x == fruitX && y == fruitY) {
+        score += 10;
+        fruitX = rand() % WIDTH;
+        fruitY = rand() % HEIGHT;
+        nTail++;
+    }
+}
+
+int main() {
+    Setup();
+    while (!gameOver) {
+        Draw();
+        Input();
+        Logic();
+        Sleep(100); // slow down movement
+    }
+    printf("\nGame Over! Final Score: %d\n", score);
+    return 0;
+}
